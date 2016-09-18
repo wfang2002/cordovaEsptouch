@@ -54,26 +54,23 @@ public class esptouchPlugin extends CordovaPlugin {
                         int count = 0;
                         final int maxDisplayCount = taskResultCount;
                         if (firstResult.isSuc()) {
-                            // StringBuilder sb = new StringBuilder();
-                            // for (IEsptouchResult resultInList : resultList) {
-                            	// sb.append("device"+count+",bssid="
-                            			// + resultInList.getBssid()
-                            			// + ",InetAddress="
-                            			// + resultInList.getInetAddress()
-                            					// .getHostAddress() + ".");
-                            	// count++;
-                            	// if (count >= maxDisplayCount) {
-                            		// break;
-                            	// }
-                            // }
-                            // if (count < resultList.size()) {
-                            	// sb.append("\nthere's " + (resultList.size() - count)
-                            			// + " more resultList(s) without showing\n");
-                            // }
-                            PluginResult result = new PluginResult(PluginResult.Status.OK, "finished");
+                            JSONObject jo = new JSONObject();
+                            try {
+                                jo.put("ip", firstResult.getInetAddress().getHostAddress());
+                                jo.put("bssid", firstResult.getBssid());
+                                PluginResult result = new PluginResult(PluginResult.Status.OK, jo);
+                                result.setKeepCallback(true);           // keep callback after this call
+                                receivingCallbackContext.sendPluginResult(result);
+                            } catch (JSONException e) {
+                                PluginResult result = new PluginResult(PluginResult.Status.ERROR, "Esptouch fail");
+                                result.setKeepCallback(true);           // keep callback after this call
+                                receivingCallbackContext.sendPluginResult(result);
+                            }
+                        } else {
+                            PluginResult result = new PluginResult(PluginResult.Status.ERROR, "Esptouch fail");
                             result.setKeepCallback(true);           // keep callback after this call
                             receivingCallbackContext.sendPluginResult(result);
-                            //receivingCallbackContext.success("finished");
+                        }
                         } else {
                             PluginResult result = new PluginResult(PluginResult.Status.ERROR, "Esptouch fail");
                             result.setKeepCallback(true);           // keep callback after this call
