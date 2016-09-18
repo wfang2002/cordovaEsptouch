@@ -71,11 +71,6 @@ public class esptouchPlugin extends CordovaPlugin {
                             result.setKeepCallback(true);           // keep callback after this call
                             receivingCallbackContext.sendPluginResult(result);
                         }
-                        } else {
-                            PluginResult result = new PluginResult(PluginResult.Status.ERROR, "Esptouch fail");
-                            result.setKeepCallback(true);           // keep callback after this call
-                            receivingCallbackContext.sendPluginResult(result);
-                        }
                     }
                 }
             }//end runnable
